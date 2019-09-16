@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">FuelConverter</string>
+    <string name="btn_main_screen_test">button</string>
+</resources>
