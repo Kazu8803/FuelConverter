@@ -104,7 +104,6 @@ class MainActivity : AppCompatActivity() {
         ethanolPriceEditText = findViewById(R.id.ethanolPrice)
         calculatorButton = findViewById(R.id.calculatorButton)
         labelTextResult = findViewById(R.id.textResult)
-        gasolinePriceEditText.requestFocus()
         forceCursorAtTextEnd(gasolinePriceEditText)
         forceCursorAtTextEnd(ethanolPriceEditText)
         inputFuelPriceMask(gasolinePriceEditText)
