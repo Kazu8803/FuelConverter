@@ -3,4 +3,10 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorLightBlue">#C2C7EC</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorGray">#AEB9B8</color>
+    <color name="buttonBorderCalculatorColor">#5ae7da</color>
+    <color name="buttonBackgroundCalculatorColor">#D7F1EC</color>
 </resources>
