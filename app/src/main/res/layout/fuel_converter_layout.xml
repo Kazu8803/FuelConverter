@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/FuelConverterLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -38,7 +39,7 @@
             android:textAlignment="center"
             android:textSize="16sp" />
 
-        <EditText
+        <io.takara.fuelconverter.PriceEditText
             android:id="@+id/ethanolPrice"
             android:layout_width="100dp"
             android:layout_height="50dp"
@@ -49,7 +50,7 @@
             android:inputType="number"
             android:text="@string/text_initial_price"
             android:textSize="16sp">
-        </EditText>
+        </io.takara.fuelconverter.PriceEditText>
     </LinearLayout>
 
     <LinearLayout
@@ -70,7 +71,7 @@
             android:text="@string/text_gasoline"
             android:textSize="16sp" />
 
-        <EditText
+        <io.takara.fuelconverter.PriceEditText
             android:id="@+id/gasolinePrice"
             android:layout_width="100dp"
             android:layout_height="50dp"
@@ -81,8 +82,7 @@
             android:inputType="number"
             android:text="@string/text_initial_price"
             android:textSize="16sp">
-
-        </EditText>
+        </io.takara.fuelconverter.PriceEditText>
     </LinearLayout>
 
     <Button

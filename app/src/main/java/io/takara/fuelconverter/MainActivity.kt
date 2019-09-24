@@ -1,24 +1,18 @@
 package io.takara.fuelconverter
 
 import android.content.Context
-import android.nfc.Tag
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.text.*
-import android.util.AttributeSet
-import android.util.Log
-import android.view.MotionEvent
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fuel_converter_layout.*
-import kotlin.math.log
-import kotlin.math.roundToInt
 import kotlin.math.roundToLong
 //import io.takara.fuelconverter.EditTextWithWatcher
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var fuelConverterLayout: LinearLayout
     private lateinit var calculatorButton: Button
     private lateinit var gasolinePriceEditText: EditText
     private lateinit var ethanolPriceEditText: EditText
@@ -31,31 +25,25 @@ class MainActivity : AppCompatActivity() {
             .toDouble()
     }
 
-    fun forceCursorAtStringEnd(elEditText: EditText){
-        val cursorWatcher = object: SpanWatcher {
-            override fun onSpanAdded(text: Spannable, what: Any, start: Int, end: Int){}
-            override fun onSpanRemoved(text: Spannable, what: Any, start: Int, end: Int){}
-            override fun onSpanChanged(text: Spannable, what: Any, ostart: Int, oend: Int, nstart: Int, nend: Int) {
-                    elEditText.setSelection(elEditText.length())
-            }
-        }
-        elEditText.getText().setSpan(cursorWatcher, 0, 0, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
+    fun View.hideKeyBoard(){
+        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(windowToken, 0)
     }
 
-    fun forceCursorAtTextEnd(elEditText: EditText){
-        elEditText.setOnClickListener{
-            elEditText.setSelection(elEditText.length())
+    fun hideKeyboardListener(linearLayout: LinearLayout){
+        linearLayout.setOnClickListener{
+            linearLayout.hideKeyBoard()
         }
     }
 
     fun inputFuelPriceMask(elEditText: EditText){
-        elEditText.setOnClickListener{ elEditText.setSelection(elEditText.length()) }
 
         elEditText.addTextChangedListener(object: TextWatcher {
             override fun afterTextChanged(p0: Editable?) {}
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun beforeTextChanged(p0: CharSequence, p1: Int, p2: Int, p3: Int) {
+                elEditText.setSelection(p0.length -1)
+            }
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                forceCursorAtStringEnd(elEditText)
                 elEditText.removeTextChangedListener(this)
                 val decimalNumber = turnPriceStringIntoDouble( elEditText.text.toString() ) / 100
                 val priceString: String = "R$ " + "%.2f".format(decimalNumber).replace(",",".")
@@ -73,16 +61,21 @@ class MainActivity : AppCompatActivity() {
     fun showResultRate(calculatorButton: Button, labelTextResult: TextView,
                        gasolinePriceEditText: EditText, ethanolPriceEditText: EditText){
         calculatorButton.setOnClickListener {
+            gasolinePriceEditText.hideKeyBoard()
+            ethanolPriceEditText.hideKeyBoard()
             val gasolinePrice: Double = turnPriceStringIntoDouble(gasolinePriceEditText.text.toString())
             val ethanolPrice: Double = turnPriceStringIntoDouble(ethanolPriceEditText.text.toString())
-            val rate = calculateEthanolGasolineRate( ethanolPrice , gasolinePrice)
+            val rate : Long
 
             if(ethanolPrice.equals(0.0) or gasolinePrice.equals(0.0))
                 labelTextResult.text = "O preço de nenhum dos \ncombustíveis pode ser zero."
-            else if(rate > 70)
-                labelTextResult.text = "Gasolina é mais viável em\n" + rate + "% do preço."
-            else
-                labelTextResult.text = "Etanol é mais viável em\n" + rate + "% do preço."
+            else {
+                rate = calculateEthanolGasolineRate( ethanolPrice , gasolinePrice)
+                if (rate > 70)
+                    labelTextResult.text = "Gasolina é mais viável em\n" + rate + "% do preço."
+                else
+                    labelTextResult.text = "Etanol é mais viável em\n" + rate + "% do preço."
+            }
         }
     }
 
@@ -100,16 +93,15 @@ class MainActivity : AppCompatActivity() {
         */
         setContentView(R.layout.fuel_converter_layout)
 
+        fuelConverterLayout = findViewById(R.id.FuelConverterLayout)
         gasolinePriceEditText = findViewById(R.id.gasolinePrice)
         ethanolPriceEditText = findViewById(R.id.ethanolPrice)
         calculatorButton = findViewById(R.id.calculatorButton)
         labelTextResult = findViewById(R.id.textResult)
-        forceCursorAtTextEnd(gasolinePriceEditText)
-        forceCursorAtTextEnd(ethanolPriceEditText)
+
+        hideKeyboardListener(fuelConverterLayout)
         inputFuelPriceMask(gasolinePriceEditText)
         inputFuelPriceMask(ethanolPriceEditText)
-
         showResultRate(calculatorButton, labelTextResult, gasolinePriceEditText, ethanolPriceEditText)
-
     }
 }
