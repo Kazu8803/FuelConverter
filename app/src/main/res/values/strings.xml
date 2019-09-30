@@ -2,7 +2,7 @@
     <string name="app_name">FuelConverter</string>
     <string name="btn_main_screen_test">button</string>
     <string name="btn_calculator">Calcular</string>
-    <string name="text_title">FUEL CALCULATOR 1.0</string>
+    <string name="text_title">FUEL CALCULATOR - 2.0</string>
     <string name="text_ethanol">Etanol</string>
     <string name="text_gasoline">Gasolina</string>
     <string name="text_result">Resultado</string>
